@@ -8,6 +8,7 @@ import {
     GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../Firebase/firebase.config";
+import LoadingSpinner from "../Components/LoadingSpinner";
 
 export const AuthContext = createContext(null);
 
@@ -19,22 +20,26 @@ const AuthProvider = ({ children }) => {
 
     const createUser = (email, password) => {
         setLoading(true);
-        return createUserWithEmailAndPassword(auth, email, password);
+        return createUserWithEmailAndPassword(auth, email, password)
+            .finally(() => setLoading(false));
     };
 
     const signIn = (email, password) => {
         setLoading(true);
-        return signInWithEmailAndPassword(auth, email, password);
+        return signInWithEmailAndPassword(auth, email, password)
+            .finally(() => setLoading(false));
     };
 
     const googleLogin = () => {
         setLoading(true);
-        return signInWithPopup(auth, googleProvider);
+        return signInWithPopup(auth, googleProvider)
+            .finally(() => setLoading(false));
     };
 
     const logOut = () => {
         setLoading(true);
-        return signOut(auth);
+        return signOut(auth)
+            .finally(() => setLoading(false));
     };
 
     useEffect(() => {
@@ -56,9 +61,7 @@ const AuthProvider = ({ children }) => {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-screen bg-gray-50">
-                <span className="loading loading-spinner loading-lg text-red-400"></span>
-            </div>
+            <LoadingSpinner></LoadingSpinner>
         );
     }
 

@@ -3,11 +3,16 @@ import { Link, useNavigate, useLocation } from "react-router";
 import { useAuth } from "../Hooks/useAuth";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../Firebase/firebase.config";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 const Login = () => {
     const { signIn, googleLogin } = useAuth();
     const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [emailForReset, setEmailForReset] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
@@ -38,27 +43,62 @@ const Login = () => {
             .catch((err) => toast.error(err.message));
     };
 
+    const handleForgotPassword = async () => {
+        if (!emailForReset) {
+            toast.error("Please enter your email to reset password");
+            return;
+        }
+        try {
+            await sendPasswordResetEmail(auth, emailForReset);
+            toast.success("Password reset email sent!");
+        } catch (error) {
+            toast.error("Error sending reset email: " + error.message);
+        }
+    };
+
     return (
-        <div className='w-11/12 mx-auto'>
+        <div className="w-11/12 mx-auto">
             <Navbar />
 
             <div className="flex justify-center items-center min-h-[80vh]">
                 <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
                     <h2 className="text-2xl font-bold text-center mb-6 text-yellow-500">Login</h2>
+
                     <form onSubmit={handleLogin} className="space-y-4">
                         <input
                             type="email"
                             name="email"
                             placeholder="Email"
+                            value={emailForReset}
+                            onChange={(e) => setEmailForReset(e.target.value)}
                             className="w-full p-2 border rounded-md"
                             required/>
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            className="w-full p-2 border rounded-md"
-                            required/>
+
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                placeholder="Password"
+                                className="w-full p-2 border rounded-md pr-10"
+                                required/>
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-2.5 text-gray-500">
+                                {showPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
+                            </button>
+                        </div>
+
                         {error && <p className="text-red-500 text-sm">{error}</p>}
+
+                        <div className="text-right">
+                            <button
+                                type="button"
+                                onClick={handleForgotPassword}
+                                className="text-sm text-yellow-500 hover:underline">
+                                Forgot password?
+                            </button>
+                        </div>
 
                         <button
                             type="submit"
@@ -67,13 +107,17 @@ const Login = () => {
                         </button>
                     </form>
 
-                    <div className="mt-4">
-                        <button
-                            onClick={handleGoogleLogin}
-                            className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
-                            Login with Google
-                        </button>
+                    <div className="flex items-center my-4">
+                        <hr className="flex-grow border-gray-300" />
+                        <span className="mx-2 text-gray-500 text-sm">or</span>
+                        <hr className="flex-grow border-gray-300" />
                     </div>
+
+                    <button
+                        onClick={handleGoogleLogin}
+                        className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
+                        Continue with Google
+                    </button>
 
                     <p className="text-center mt-4 text-sm">
                         New user?{" "}

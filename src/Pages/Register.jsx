@@ -5,10 +5,12 @@ import { updateProfile } from "firebase/auth";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 import { toast } from "react-hot-toast";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 const Register = () => {
     const { createUser, googleLogin } = useAuth();
     const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleRegister = (e) => {
@@ -42,13 +44,9 @@ const Register = () => {
                         toast.success("Registration successful!");
                         navigate("/", { replace: true });
                     })
-                    .catch((err) => {
-                        toast.error("Profile update failed: " + err.message);
-                    });
+                    .catch((err) => toast.error("Profile update failed: " + err.message));
             })
-            .catch((err) => {
-                toast.error("Registration failed: " + err.message);
-            });
+            .catch((err) => toast.error("Registration failed: " + err.message));
     };
 
     const handleGoogleLogin = () => {
@@ -66,9 +64,7 @@ const Register = () => {
 
             <div className="flex justify-center items-center min-h-[80vh]">
                 <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-                    <h2 className="text-2xl font-bold text-center mb-6 text-yellow-500">
-                        Register
-                    </h2>
+                    <h2 className="text-2xl font-bold text-center mb-6 text-yellow-500">Register</h2>
 
                     <form onSubmit={handleRegister} className="space-y-4">
                         <input
@@ -88,12 +84,22 @@ const Register = () => {
                             name="photoURL"
                             placeholder="Photo URL"
                             className="w-full p-2 border rounded-md"/>
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            className="w-full p-2 border rounded-md"
-                            required/>
+
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                placeholder="Password"
+                                className="w-full p-2 border rounded-md pr-10"
+                                required/>
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-2.5 text-gray-500">
+                                {showPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
+                            </button>
+                        </div>
+
                         {error && <p className="text-red-500 text-sm">{error}</p>}
 
                         <button
@@ -103,13 +109,17 @@ const Register = () => {
                         </button>
                     </form>
 
-                    <div className="mt-4">
-                        <button
-                            onClick={handleGoogleLogin}
-                            className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
-                            Login with Google
-                        </button>
+                    <div className="flex items-center my-4">
+                        <hr className="flex-grow border-gray-300" />
+                        <span className="mx-2 text-gray-500 text-sm">or</span>
+                        <hr className="flex-grow border-gray-300" />
                     </div>
+
+                    <button
+                        onClick={handleGoogleLogin}
+                        className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
+                        Continue with Google
+                    </button>
 
                     <p className="text-center mt-4 text-sm">
                         Already have an account?{" "}
