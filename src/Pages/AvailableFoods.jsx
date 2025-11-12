@@ -34,8 +34,8 @@ const AvailableFoods = () => {
                                         alt={food.donator_name}
                                         className="w-10 h-10 rounded-full object-cover border-2 border-yellow-400"
                                     />
-                                    <p className="text-gray-700 text-sm font-medium">
-                                        Donated by {food.donator_name}
+                                    <p className="text-gray-700 text-sm font-bold">
+                                        <span className="font-semibold">Donated by</span> {food.donator_name}
                                     </p>
                                 </div>
 
