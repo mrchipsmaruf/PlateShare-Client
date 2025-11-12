@@ -3,11 +3,11 @@ import logo from "../assets/logo.png";
 
 const Footer = () => {
     return (
-        <footer className="bg-orange-100 py-6 mt-16">
-            <div className="w-11/12 mx-auto flex flex-col md:flex-row justify-between items-center">
+        <footer className="bg-yellow-100 py-6 mt-16 w-full">
+            <div className="flex flex-col md:flex-row justify-between px-5 items-center">
                 <div className="flex items-center gap-2">
                     <img src={logo} alt="PlateShare" className="w-10" />
-                    <h2 className="text-xl font-semibold text-orange-700">PlateShare</h2>
+                    <h2 className='text-xl font-semibold text-red-500'><span className='text-yellow-400'>Plate</span>Share</h2>
                 </div>
 
                 <p className="text-gray-600 text-sm mt-3 md:mt-0">
