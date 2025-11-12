@@ -1,70 +1,58 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 const FeaturedFoods = () => {
     const [foods, setFoods] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("http://localhost:3000/foods")
+        fetch("http://localhost:3000/featured-foods")
             .then((res) => res.json())
-            .then((data) => {
-                const sorted = data
-                    .map((item) => ({
-                        ...item,
-                        serves: parseInt(item.quantity.match(/\d+/)?.[0] || 0),
-                    }))
-                    .sort((a, b) => b.serves - a.serves)
-                    .slice(0, 6);
-                setFoods(sorted);
-            });
+            .then((data) => setFoods(data))
+            .catch((error) => console.error("Error loading featured foods:", error));
     }, []);
 
     return (
-        <section className="bg-orange-50 py-16">
-            <div className="w-11/12 mx-auto text-center">
-                <h2 className="text-3xl font-bold text-yellow-500 mb-10">
-                    🍽️ Featured <span className="text-red-500">Foods</span>
-                </h2>
+        <section className="w-full px-6 py-12 bg-red-100">
+            <h2 className="text-3xl font-bold text-center mb-10 text-red-400">
+                Featured <span className="text-yellow-400">Foods</span>
+            </h2>
 
-                {foods.length === 0 ? (
-                    <p className="text-gray-500">Loading foods...</p>
-                ) : (
-                    <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-                        {foods.map((food) => (
-                            <div
-                                key={food._id}
-                                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition"
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 px-4">
+                {foods.map((food) => (
+                    <div
+                        key={food._id}
+                        className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300"
+                    >
+                        <img
+                            src={food.food_image}
+                            alt={food.food_name}
+                            className="w-full h-56 object-cover"
+                        />
+                        <div className="p-5">
+                            <h3 className="text-xl font-semibold text-yellow-400 mb-2">
+                                {food.food_name}
+                            </h3>
+                            <p className="text-gray-600 text-sm mb-1">{food.food_quantity}</p>
+                            <p className="text-gray-500 text-sm mb-3">{food.pickup_location}</p>
+                            <button
+                                onClick={() => navigate(`/foods/${food._id}`)}
+                                className="w-full bg-red-400 text-white py-2 rounded-lg hover:bg-yellow-400 transition"
                             >
-                                <img
-                                    src={food.image}
-                                    alt={food.foodName}
-                                    className="w-full h-48 object-cover"
-                                />
-                                <div className="p-4 text-left">
-                                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                                        {food.foodName}
-                                    </h3>
-                                    <p className="text-sm text-gray-600 mb-2">
-                                        {food.description.slice(0, 60)}...
-                                    </p>
-                                    <p className="text-yellow-600 font-medium mb-2">
-                                        {food.quantity}
-                                    </p>
-                                    <p className="text-sm text-gray-500">
-                                        Donated by: {food.donorName}
-                                    </p>
-                                    <div className="mt-4">
-                                        <Link to={`/foods/${food._id}`}>
-                                            <button className="bg-yellow-400 text-white px-4 py-2 rounded-lg hover:bg-yellow-500 w-full">
-                                                View Details
-                                            </button>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                                View Details
+                            </button>
+                        </div>
                     </div>
-                )}
+                ))}
+            </div>
+
+            <div className="text-center mt-12">
+                <button
+                    onClick={() => navigate("/available-foods")}
+                    className="bg-red-400 text-white px-8 py-3 rounded-lg text-lg hover:bg-yellow-400 transition"
+                >
+                    Show All
+                </button>
             </div>
         </section>
     );
