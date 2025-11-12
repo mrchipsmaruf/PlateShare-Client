@@ -7,7 +7,7 @@ const ErrorPage = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex flex-col min-h-screen bg-red-50">
+        <div className="flex flex-col min-h-screen bg-red-100">
             <Navbar />
 
             <div className="flex-grow flex flex-col justify-center items-center text-center px-6 py-12">

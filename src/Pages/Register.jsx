@@ -4,8 +4,7 @@ import { useAuth } from "../Hooks/useAuth";
 import { updateProfile } from "firebase/auth";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-hot-toast";
 
 const Register = () => {
     const { createUser, googleLogin } = useAuth();
@@ -38,10 +37,14 @@ const Register = () => {
                 updateProfile(result.user, {
                     displayName: name,
                     photoURL: photoURL,
-                }).then(() => {
-                    toast.success("Registration successful!");
-                    navigate("/");
-                });
+                })
+                    .then(() => {
+                        toast.success("Registration successful!");
+                        navigate("/", { replace: true });
+                    })
+                    .catch((err) => {
+                        toast.error("Profile update failed: " + err.message);
+                    });
             })
             .catch((err) => {
                 toast.error("Registration failed: " + err.message);
@@ -52,14 +55,13 @@ const Register = () => {
         googleLogin()
             .then(() => {
                 toast.success("Logged in with Google!");
-                navigate("/");
+                navigate("/", { replace: true });
             })
             .catch((err) => toast.error(err.message));
     };
 
     return (
         <div className="w-11/12 mx-auto">
-            <ToastContainer />
             <Navbar />
 
             <div className="flex justify-center items-center min-h-[80vh]">
@@ -74,34 +76,29 @@ const Register = () => {
                             name="name"
                             placeholder="Name"
                             className="w-full p-2 border rounded-md"
-                            required
-                        />
+                            required/>
                         <input
                             type="email"
                             name="email"
                             placeholder="Email"
                             className="w-full p-2 border rounded-md"
-                            required
-                        />
+                            required/>
                         <input
                             type="text"
                             name="photoURL"
                             placeholder="Photo URL"
-                            className="w-full p-2 border rounded-md"
-                        />
+                            className="w-full p-2 border rounded-md"/>
                         <input
                             type="password"
                             name="password"
                             placeholder="Password"
                             className="w-full p-2 border rounded-md"
-                            required
-                        />
+                            required/>
                         {error && <p className="text-red-500 text-sm">{error}</p>}
 
                         <button
                             type="submit"
-                            className="w-full bg-yellow-400 text-white py-2 rounded-lg hover:bg-yellow-500"
-                        >
+                            className="w-full bg-yellow-400 text-white py-2 rounded-lg hover:bg-yellow-500 transition">
                             Register
                         </button>
                     </form>
@@ -109,8 +106,7 @@ const Register = () => {
                     <div className="mt-4">
                         <button
                             onClick={handleGoogleLogin}
-                            className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
-                        >
+                            className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
                             Login with Google
                         </button>
                     </div>

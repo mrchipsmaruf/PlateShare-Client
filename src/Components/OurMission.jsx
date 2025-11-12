@@ -2,7 +2,7 @@ import React from "react";
 
 const OurMission = () => {
     return (
-        <section className="w-full bg-green-50 py-16">
+        <section className="w-full bg-red-100 py-16">
             <div className="max-w-6xl mx-auto px-6 text-center">
                 <h2 className="text-3xl font-bold text-red-400 mb-6">
                     Our <span className="text-yellow-400">Mission</span>

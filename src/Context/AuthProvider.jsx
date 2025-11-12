@@ -14,7 +14,6 @@ export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
-
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -54,6 +53,14 @@ const AuthProvider = ({ children }) => {
         googleLogin,
         logOut,
     };
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen bg-gray-50">
+                <span className="loading loading-spinner loading-lg text-red-400"></span>
+            </div>
+        );
+    }
 
     return (
         <AuthContext.Provider value={authInfo}>

@@ -3,8 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router";
 import { useAuth } from "../Hooks/useAuth";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast from "react-hot-toast";
 
 const Login = () => {
     const { signIn, googleLogin } = useAuth();
@@ -21,6 +20,7 @@ const Login = () => {
         signIn(email, password)
             .then(() => {
                 toast.success("Login successful!");
+                setError("");
                 navigate(from, { replace: true });
             })
             .catch((err) => {
@@ -40,7 +40,6 @@ const Login = () => {
 
     return (
         <div className='w-11/12 mx-auto'>
-            <ToastContainer />
             <Navbar />
 
             <div className="flex justify-center items-center min-h-[80vh]">
@@ -52,21 +51,18 @@ const Login = () => {
                             name="email"
                             placeholder="Email"
                             className="w-full p-2 border rounded-md"
-                            required
-                        />
+                            required/>
                         <input
                             type="password"
                             name="password"
                             placeholder="Password"
                             className="w-full p-2 border rounded-md"
-                            required
-                        />
+                            required/>
                         {error && <p className="text-red-500 text-sm">{error}</p>}
 
                         <button
                             type="submit"
-                            className="w-full bg-yellow-400 text-white py-2 rounded-lg hover:bg-yellow-500"
-                        >
+                            className="w-full bg-yellow-400 text-white py-2 rounded-lg hover:bg-yellow-500 transition">
                             Login
                         </button>
                     </form>
@@ -74,8 +70,7 @@ const Login = () => {
                     <div className="mt-4">
                         <button
                             onClick={handleGoogleLogin}
-                            className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
-                        >
+                            className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
                             Login with Google
                         </button>
                     </div>
