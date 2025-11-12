@@ -1,17 +1,37 @@
-import React from "react";
-import { useLoaderData, useNavigate } from "react-router";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import LoadingSpinner from "./LoadingSpinner";
 
 const FeaturedFoods = () => {
-    const allFoods = useLoaderData();
+    const [featuredFoods, setFeaturedFoods] = useState([]);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    const featuredFoods = allFoods
-        .map(food => ({
-            ...food,
-            serves: parseInt(food.food_quantity.match(/\d+/)?.[0] || 0),
-        }))
-        .sort((a, b) => b.serves - a.serves)
-        .slice(0, 6);
+    useEffect(() => {
+        setLoading(true);
+        fetch("http://localhost:3000/foods")
+            .then((res) => res.json())
+            .then((data) => {
+                const sortedFoods = data
+                    .map((food) => ({
+                        ...food,
+                        serves: parseInt(food.food_quantity.match(/\d+/)?.[0] || 0),
+                    }))
+                    .sort((a, b) => b.serves - a.serves)
+                    .slice(0, 6);
+                setFeaturedFoods(sortedFoods);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center py-20">
+                <LoadingSpinner />
+            </div>
+        );
+    }
 
     return (
         <section className="w-full mx-auto py-12 px-6 bg-red-100">
@@ -42,7 +62,8 @@ const FeaturedFoods = () => {
                                     className="w-10 h-10 rounded-full object-cover border-2 border-yellow-400"
                                 />
                                 <p className="text-gray-700 text-sm font-bold">
-                                    <span className="font-semibold">Donated by</span> {food.donator_name}
+                                    <span className="font-semibold">Donated by</span>{" "}
+                                    {food.donator_name}
                                 </p>
                             </div>
 
@@ -60,8 +81,8 @@ const FeaturedFoods = () => {
                                 Status:{" "}
                                 <span
                                     className={`font-semibold ${food.food_status === "Available"
-                                            ? "text-green-600"
-                                            : "text-red-500"
+                                        ? "text-green-600"
+                                        : "text-red-500"
                                         }`}
                                 >
                                     {food.food_status}

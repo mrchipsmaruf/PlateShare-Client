@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLoaderData, useNavigate } from "react-router";
+import LoadingSpinner from "../Components/LoadingSpinner";
 
 const AvailableFoods = () => {
-    const foods = useLoaderData();
+    const loaderFoods = useLoaderData();
+    const [foods, setFoods] = useState([]);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (loaderFoods) {
+            setTimeout(() => {
+                setFoods(loaderFoods);
+                setLoading(false);
+            }, 500);
+        }
+    }, [loaderFoods]);
+
+    if (loading) return <LoadingSpinner />;
 
     return (
         <section className="w-full px-6 py-12 bg-red-100">
