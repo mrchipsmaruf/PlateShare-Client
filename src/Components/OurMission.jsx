@@ -4,8 +4,8 @@ const OurMission = () => {
     return (
         <section className="w-full bg-green-50 py-16">
             <div className="max-w-6xl mx-auto px-6 text-center">
-                <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                    Our <span className="text-green-600">Mission</span>
+                <h2 className="text-3xl font-bold text-red-400 mb-6">
+                    Our <span className="text-yellow-400">Mission</span>
                 </h2>
                 <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-10">
                     At <span className="text-red-400 font-semibold">PlateShare</span>, our mission is to reduce food waste
