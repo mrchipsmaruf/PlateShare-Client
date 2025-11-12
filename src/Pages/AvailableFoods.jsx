@@ -10,7 +10,6 @@ const AvailableFoods = () => {
             <h2 className="text-3xl font-bold text-center mb-10 text-red-400">
                 Available <span className="text-yellow-400">Foods</span>
             </h2>
-
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 px-4">
                 {foods.length > 0 ? (
                     foods.map((food) => (
@@ -23,10 +22,23 @@ const AvailableFoods = () => {
                                 alt={food.food_name}
                                 className="w-full h-56 object-cover"
                             />
+
                             <div className="p-5">
                                 <h3 className="text-xl font-semibold text-yellow-400 mb-2">
                                     {food.food_name}
                                 </h3>
+
+                                <div className="flex items-center gap-3 mb-3">
+                                    <img
+                                        src={food.donator_image}
+                                        alt={food.donator_name}
+                                        className="w-10 h-10 rounded-full object-cover border-2 border-yellow-400"
+                                    />
+                                    <p className="text-gray-700 text-sm font-medium">
+                                        Donated by {food.donator_name}
+                                    </p>
+                                </div>
+
                                 <p className="text-gray-600 text-sm mb-1">
                                     {food.food_quantity}
                                 </p>
@@ -43,13 +55,14 @@ const AvailableFoods = () => {
                                     Status:{" "}
                                     <span
                                         className={`font-semibold ${food.food_status === "Available"
-                                                ? "text-green-600"
-                                                : "text-red-500"
+                                            ? "text-green-600"
+                                            : "text-red-500"
                                             }`}
                                     >
                                         {food.food_status}
                                     </span>
                                 </p>
+
                                 <button
                                     onClick={() => navigate(`/food-details/${food._id}`)}
                                     className="w-full bg-red-400 text-white py-2 rounded-lg hover:bg-yellow-400 transition"

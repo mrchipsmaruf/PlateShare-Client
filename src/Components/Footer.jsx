@@ -3,7 +3,7 @@ import logo from "../assets/logo.png";
 
 const Footer = () => {
     return (
-        <footer className="bg-yellow-100 py-6 mt-16 w-full">
+        <footer className="bg-yellow-100 py-6 w-full">
             <div className="flex flex-col md:flex-row justify-between px-5 items-center">
                 <div className="flex items-center gap-2">
                     <img src={logo} alt="PlateShare" className="w-10" />

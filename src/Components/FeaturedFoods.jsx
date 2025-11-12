@@ -35,12 +35,23 @@ const FeaturedFoods = () => {
                                 {food.food_name}
                             </h3>
 
+                            <div className="flex items-center gap-3 mb-3">
+                                <img
+                                    src={food.donator_image}
+                                    alt={food.donator_name}
+                                    className="w-10 h-10 rounded-full object-cover border-2 border-yellow-400"
+                                />
+                                <p className="text-gray-700 text-sm font-medium">
+                                    Donated by {food.donator_name}
+                                </p>
+                            </div>
+
                             <p className="text-gray-600 text-sm mb-1">{food.food_quantity}</p>
                             <p className="text-gray-500 text-sm mb-1">
                                 {food.pickup_location}
                             </p>
                             <p className="text-gray-500 text-sm mb-1">
-                                🗓️ Expire Date:{" "}
+                                Expire Date:{" "}
                                 <span className="font-medium text-gray-700">
                                     {food.expire_date}
                                 </span>
