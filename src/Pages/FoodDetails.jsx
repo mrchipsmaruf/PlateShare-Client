@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLoaderData, useNavigate } from "react-router";
 import { useAuth } from "../Hooks/useAuth";
 import { toast } from "react-hot-toast";
 
 const FoodDetails = () => {
-    const food = useLoaderData();
+    const foodData = useLoaderData();
     const { user } = useAuth();
     const navigate = useNavigate();
+    const [food, setFood] = useState(foodData);
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
         location: "",
@@ -14,13 +15,17 @@ const FoodDetails = () => {
         contact: "",
     });
 
-    if (!food) {
-        return (
-            <div className="text-center py-20 text-gray-600 text-lg">
-                No food found
-            </div>
-        );
-    }
+    const [requests, setRequests] = useState([]);
+    const [updatingId, setUpdatingId] = useState(null);
+
+    useEffect(() => {
+        if (user?.email === food.donator_email) {
+            fetch(`http://localhost:3000/food-requests/${food._id}`)
+                .then((res) => res.json())
+                .then((data) => setRequests(data))
+                .catch((err) => console.error("Error loading requests:", err));
+        }
+    }, [user?.email, food._id, food.donator_email]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,9 +58,7 @@ const FoodDetails = () => {
         try {
             const res = await fetch("http://localhost:3000/food-requests", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(requestData),
             });
 
@@ -63,8 +66,9 @@ const FoodDetails = () => {
 
             if (data.success) {
                 toast.success("Request submitted successfully!");
+                setRequests(prev => [...prev, { ...requestData, _id: Date.now().toString() }]);
+                localStorage.setItem("requestsUpdated", Date.now());
                 setShowModal(false);
-                navigate("/my-food-requests");
             } else {
                 toast.error(data.message || "Failed to submit request");
             }
@@ -73,6 +77,52 @@ const FoodDetails = () => {
             toast.error("Something went wrong");
         }
     };
+
+    const handleStatusUpdate = async (id, status) => {
+        setUpdatingId(id); // ✅ set loading state
+        try {
+            await fetch(`http://localhost:3000/food-requests/${id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status }),
+            });
+
+            let newFoodStatus = "";
+            if (status === "accepted") newFoodStatus = "Donated";
+            if (status === "rejected") newFoodStatus = "Rejected";
+
+            if (newFoodStatus) {
+                await fetch(`http://localhost:3000/foods/${food._id}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ food_status: newFoodStatus }),
+                });
+                setFood((prev) => ({ ...prev, food_status: newFoodStatus }));
+            }
+
+            setRequests((prev) =>
+                prev.map((r) => (r._id === id ? { ...r, status } : r))
+            );
+
+            toast.success(`Request ${status} successfully`);
+            localStorage.setItem("requestsUpdated", Date.now());
+
+            await fetch(`http://localhost:3000/refresh-requests?email=${user?.email}`);
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to update status");
+        } finally {
+            setUpdatingId(null); // ✅ reset after done
+        }
+    };
+
+    if (!food) {
+        return (
+            <div className="text-center py-20 text-gray-600 text-lg">
+                No food found
+            </div>
+        );
+    }
 
     return (
         <section className="w-full min-h-screen bg-red-100 py-12 px-6 relative">
@@ -83,9 +133,7 @@ const FoodDetails = () => {
                     className="w-full h-80 object-cover"/>
 
                 <div className="p-8">
-                    <h2 className="text-3xl font-bold text-red-400 mb-3">
-                        {food.food_name}
-                    </h2>
+                    <h2 className="text-3xl font-bold text-red-400 mb-3">{food.food_name}</h2>
 
                     <div className="flex items-center gap-3 mb-4">
                         <img
@@ -101,23 +149,16 @@ const FoodDetails = () => {
                     </div>
 
                     <div className="space-y-2 mb-5">
-                        <p className="text-gray-700">
-                            <span className="font-semibold">Quantity:</span>{" "}
-                            {food.food_quantity}
-                        </p>
-                        <p className="text-gray-700">
-                            <span className="font-semibold">Pickup Location:</span>{" "}
-                            {food.pickup_location}
-                        </p>
-                        <p className="text-gray-700">
-                            <span className="font-semibold">Expire Date:</span>{" "}
-                            {food.expire_date}
-                        </p>
-                        <p className="text-gray-700">
+                        <p><span className="font-semibold">Quantity:</span> {food.food_quantity}</p>
+                        <p><span className="font-semibold">Pickup Location:</span> {food.pickup_location}</p>
+                        <p><span className="font-semibold">Expire Date:</span> {food.expire_date}</p>
+                        <p>
                             <span className="font-semibold">Status:</span>{" "}
                             <span
                                 className={`font-semibold ${food.food_status === "Available"
-                                        ? "text-green-600"
+                                    ? "text-green-600"
+                                    : food.food_status === "Donated"
+                                        ? "text-blue-600"
                                         : "text-red-500"
                                     }`}>
                                 {food.food_status}
@@ -145,14 +186,88 @@ const FoodDetails = () => {
                             disabled={food.food_status !== "Available"}
                             onClick={() => setShowModal(true)}
                             className={`flex-1 py-3 rounded-lg font-medium transition ${food.food_status === "Available"
-                                    ? "bg-red-400 text-white hover:bg-yellow-400"
-                                    : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                                ? "bg-red-400 text-white hover:bg-yellow-400"
+                                : "bg-gray-400 text-gray-200 cursor-not-allowed"
                                 }`}>
                             Request This Food
                         </button>
                     </div>
                 </div>
             </div>
+
+            {user?.email === food.donator_email && (
+                <div className="max-w-5xl mx-auto bg-white mt-10 p-6 rounded-lg shadow">
+                    <h3 className="text-2xl font-bold text-gray-700 mb-4">Food Requests</h3>
+                    {requests.length === 0 ? (
+                        <p className="text-gray-500">No requests yet for this food.</p>
+                    ) : (
+                        <table className="w-full border text-left">
+                            <thead className="bg-gray-100">
+                                <tr>
+                                    <th className="p-2 border">Requester</th>
+                                    <th className="p-2 border">Reason</th>
+                                    <th className="p-2 border">Contact</th>
+                                    <th className="p-2 border">Location</th>
+                                    <th className="p-2 border">Status</th>
+                                    <th className="p-2 border">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {requests.map((req) => (
+                                    <tr key={req._id}>
+                                        <td className="p-2 border flex items-center gap-2">
+                                            <img
+                                                src={req.requesterPhoto}
+                                                alt={req.requesterName}
+                                                className="w-8 h-8 rounded-full"/>
+                                            {req.requesterName}
+                                        </td>
+                                        <td className="p-2 border">{req.reason}</td>
+                                        <td className="p-2 border">{req.contact}</td>
+                                        <td className="p-2 border">{req.location}</td>
+                                        <td className="p-2 border font-semibold capitalize">
+                                            {req.status}
+                                        </td>
+                                        <td className="p-2 border">
+                                            {req.status === "pending" && (
+                                                <>
+                                                    <button
+                                                        onClick={() => handleStatusUpdate(req._id, "accepted")}
+                                                        disabled={updatingId === req._id}
+                                                        className={`px-2 py-1 rounded mr-2 ${updatingId === req._id
+                                                            ? "bg-green-400 text-white cursor-not-allowed"
+                                                            : "bg-green-500 text-white hover:bg-green-600"
+                                                            }`}>
+                                                        Accept
+                                                    </button>
+
+                                                    <button
+                                                        onClick={() => handleStatusUpdate(req._id, "rejected")}
+                                                        disabled={updatingId === req._id}
+                                                        className={`px-2 py-1 rounded ${updatingId === req._id
+                                                            ? "bg-red-400 text-white cursor-not-allowed"
+                                                            : "bg-red-500 text-white hover:bg-red-600"
+                                                            }`}
+                                                    >
+                                                        Reject
+                                                    </button>
+                                                </>
+                                            )}
+
+                                            {req.status === "accepted" && (
+                                                <span className="text-green-600 font-semibold">Accepted</span>
+                                            )}
+                                            {req.status === "rejected" && (
+                                                <span className="text-red-600 font-semibold">Rejected</span>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
+            )}
 
             {showModal && (
                 <div className="fixed inset-0 flex justify-center items-center bg-white/70 backdrop-blur-sm z-50">
@@ -174,25 +289,24 @@ const FoodDetails = () => {
                                 placeholder="Your Location"
                                 value={formData.location}
                                 onChange={handleChange}
-                                className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                required/>
+                                required
+                                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-yellow-400"/>
                             <textarea
                                 name="reason"
                                 placeholder="Why do you need this food?"
                                 value={formData.reason}
                                 onChange={handleChange}
-                                className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                                 rows="3"
-                                required>
-                            </textarea>
+                                required
+                                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-yellow-400"/>
                             <input
                                 type="text"
                                 name="contact"
                                 placeholder="Contact Number"
                                 value={formData.contact}
                                 onChange={handleChange}
-                                className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                required />
+                                required
+                                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-yellow-400"/>
 
                             <button
                                 type="submit"

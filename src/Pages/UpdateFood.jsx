@@ -26,7 +26,7 @@ const UpdateFood = () => {
             const { _id, ...updatePayload } = food;
 
             const res = await fetch(`http://localhost:3000/foods/${id}`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatePayload),
             });
@@ -56,8 +56,7 @@ const UpdateFood = () => {
 
             <form
                 onSubmit={handleSubmit}
-                className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg"
-            >
+                className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
                 <div className="mb-4">
                     <label className="block text-gray-700 mb-1">Food Name</label>
                     <input
@@ -65,8 +64,7 @@ const UpdateFood = () => {
                         name="food_name"
                         value={food.food_name || ""}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
-                    />
+                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"/>
                 </div>
 
                 <div className="mb-4">
@@ -76,8 +74,7 @@ const UpdateFood = () => {
                         name="food_image"
                         value={food.food_image || ""}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
-                    />
+                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"/>
                 </div>
 
                 <div className="mb-4">
@@ -87,8 +84,7 @@ const UpdateFood = () => {
                         name="food_quantity"
                         value={food.food_quantity || ""}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
-                    />
+                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"/>
                 </div>
 
                 <div className="mb-4">
@@ -98,8 +94,7 @@ const UpdateFood = () => {
                         name="pickup_location"
                         value={food.pickup_location || ""}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
-                    />
+                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"/>
                 </div>
 
                 <div className="mb-4">
@@ -109,8 +104,7 @@ const UpdateFood = () => {
                         name="expire_date"
                         value={food.expire_date?.split("T")[0] || ""}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
-                    />
+                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"/>
                 </div>
 
                 <div className="mb-6">
@@ -126,8 +120,7 @@ const UpdateFood = () => {
 
                 <button
                     type="submit"
-                    className="w-full bg-red-400 text-white py-3 rounded-lg text-lg font-medium hover:bg-yellow-400 transition"
-                >
+                    className="w-full bg-red-400 text-white py-3 rounded-lg text-lg font-medium hover:bg-yellow-400 transition">
                     Update Food
                 </button>
             </form>

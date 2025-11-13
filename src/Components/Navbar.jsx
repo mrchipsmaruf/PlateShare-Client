@@ -73,7 +73,7 @@ const Navbar = () => {
                                 Manage My Foods
                             </NavLink>
                             <NavLink
-                                to="/my-food-request"
+                                to="/my-food-requests"
                                 className={({ isActive }) =>
                                     isActive ? "text-yellow-400 font-semibold" : "text-gray-700 hover:text-yellow-400"
                                 }>
@@ -139,7 +139,7 @@ const Navbar = () => {
                                 Manage My Foods
                             </NavLink>
                             <NavLink
-                                to="/my-food-request"
+                                to="/my-food-requests"
                                 onClick={() => setMenuOpen(false)}
                                 className="block text-gray-700 hover:text-yellow-400">
                                 My Food Requests
