@@ -41,7 +41,7 @@ const AddFood = () => {
                 food_status: "Available",
             };
 
-            const res = await fetch("http://localhost:3000/foods", {
+            const res = await fetch("https://plate-share-server-beta.vercel.app/foods", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newFood),
@@ -69,8 +69,7 @@ const AddFood = () => {
 
             <form
                 onSubmit={handleSubmit}
-                className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg"
-            >
+                className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
                 <div className="mb-4">
                     <label className="block text-gray-700 mb-1">Food Name</label>
                     <input
@@ -79,8 +78,7 @@ const AddFood = () => {
                         value={formData.food_name}
                         onChange={handleChange}
                         required
-                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
-                    />
+                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"/>
                 </div>
 
                 <div className="mb-4">
@@ -94,8 +92,7 @@ const AddFood = () => {
                         onChange={handleChange}
                         placeholder="https://example.com/your-image.jpg"
                         required
-                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
-                    />
+                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"/>
                 </div>
 
                 <div className="mb-4">
@@ -107,8 +104,7 @@ const AddFood = () => {
                         onChange={handleChange}
                         placeholder="e.g., Serves 2 people"
                         required
-                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
-                    />
+                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"/>
                 </div>
 
                 <div className="mb-4">
@@ -119,8 +115,7 @@ const AddFood = () => {
                         value={formData.pickup_location}
                         onChange={handleChange}
                         required
-                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
-                    />
+                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"/>
                 </div>
 
                 <div className="mb-4">
@@ -131,8 +126,7 @@ const AddFood = () => {
                         value={formData.expire_date}
                         onChange={handleChange}
                         required
-                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
-                    />
+                        className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"/>
                 </div>
 
                 <div className="mb-6">
@@ -149,8 +143,7 @@ const AddFood = () => {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-red-400 text-white py-3 rounded-lg text-lg font-medium hover:bg-yellow-400 transition"
-                >
+                    className="w-full bg-red-400 text-white py-3 rounded-lg text-lg font-medium hover:bg-yellow-400 transition">
                     {loading ? "Adding..." : "Add Food"}
                 </button>
             </form>

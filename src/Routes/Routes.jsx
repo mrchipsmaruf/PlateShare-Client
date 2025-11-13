@@ -20,12 +20,12 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
-        loader: () => fetch('http://localhost:3000/foods')
+        loader: () => fetch('https://plate-share-server-beta.vercel.app/foods')
       },
       {
         path: "/available-foods",
         element: <AvailableFoods></AvailableFoods>,
-        loader: () => fetch('http://localhost:3000/foods')
+        loader: () => fetch('https://plate-share-server-beta.vercel.app/foods')
       },
       {
         path: "/add-food",
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/foods/${params.id}`),
+          fetch(`https://plate-share-server-beta.vercel.app/foods/${params.id}`),
       },
       {
         path: "/manage-my-foods",
@@ -69,7 +69,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/foods/${params.id}`),
+          fetch(`https://plate-share-server-beta.vercel.app/foods/${params.id}`),
       },
     ],
   },

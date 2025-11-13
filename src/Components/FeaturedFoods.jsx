@@ -9,7 +9,7 @@ const FeaturedFoods = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch("http://localhost:3000/foods")
+        fetch("https://plate-share-server-beta.vercel.app/foods")
             .then((res) => res.json())
             .then((data) => {
                 const sortedFoods = data
@@ -43,13 +43,11 @@ const FeaturedFoods = () => {
                 {featuredFoods.map((food) => (
                     <div
                         key={food._id}
-                        className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300"
-                    >
+                        className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
                         <img
                             src={food.food_image}
                             alt={food.food_name}
-                            className="w-full h-56 object-cover"
-                        />
+                            className="w-full h-56 object-cover"/>
                         <div className="p-5">
                             <h3 className="text-xl font-semibold text-yellow-400 mb-2">
                                 {food.food_name}
@@ -59,8 +57,7 @@ const FeaturedFoods = () => {
                                 <img
                                     src={food.donator_image}
                                     alt={food.donator_name}
-                                    className="w-10 h-10 rounded-full object-cover border-2 border-yellow-400"
-                                />
+                                    className="w-10 h-10 rounded-full object-cover border-2 border-yellow-400"/>
                                 <p className="text-gray-700 text-sm font-bold">
                                     <span className="font-semibold">Donated by</span>{" "}
                                     {food.donator_name}
@@ -83,16 +80,14 @@ const FeaturedFoods = () => {
                                     className={`font-semibold ${food.food_status === "Available"
                                         ? "text-green-600"
                                         : "text-red-500"
-                                        }`}
-                                >
+                                        }`}>
                                     {food.food_status}
                                 </span>
                             </p>
 
                             <button
                                 onClick={() => navigate(`/food-details/${food._id}`)}
-                                className="w-full bg-red-400 text-white py-2 rounded-lg hover:bg-yellow-400 transition"
-                            >
+                                className="w-full bg-red-400 text-white py-2 rounded-lg hover:bg-yellow-400 transition">
                                 View Details
                             </button>
                         </div>
@@ -103,8 +98,7 @@ const FeaturedFoods = () => {
             <div className="text-center mt-12">
                 <button
                     onClick={() => navigate("/available-foods")}
-                    className="bg-red-400 text-white px-8 py-3 rounded-lg text-lg hover:bg-yellow-400 transition"
-                >
+                    className="bg-red-400 text-white px-8 py-3 rounded-lg text-lg hover:bg-yellow-400 transition">
                     Show All
                 </button>
             </div>

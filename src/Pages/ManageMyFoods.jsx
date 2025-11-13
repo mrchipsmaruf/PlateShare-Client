@@ -11,7 +11,7 @@ const ManageMyFoods = () => {
 
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:3000/my-foods?email=${user.email}`)
+            fetch(`https://plate-share-server-beta.vercel.app/my-foods?email=${user.email}`)
                 .then((res) => res.json())
                 .then((data) => {
                     setMyFoods(data);
@@ -35,7 +35,7 @@ const ManageMyFoods = () => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/foods/${id}`, {
+                fetch(`https://plate-share-server-beta.vercel.app/foods/${id}`, {
                     method: "DELETE",
                 })
                     .then((res) => res.json())
@@ -84,8 +84,7 @@ const ManageMyFoods = () => {
                                         <img
                                             src={food.food_image}
                                             alt={food.food_name}
-                                            className="w-16 h-16 object-cover rounded-lg"
-                                        />
+                                            className="w-16 h-16 object-cover rounded-lg"/>
                                     </td>
                                     <td>{food.food_name}</td>
                                     <td>{food.food_quantity}</td>
@@ -95,16 +94,14 @@ const ManageMyFoods = () => {
                                             className={`px-3 py-1 rounded-full text-sm ${food.food_status === "Available"
                                                 ? "bg-red-100 text-black"
                                                 : "bg-gray-200 text-gray-600"
-                                                }`}
-                                        >
+                                                }`}>
                                             {food.food_status}
                                         </span>
                                     </td>
                                     <td className="space-x-2">
                                         <Link
                                             to={`/update-food/${food._id}`}
-                                            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                                        >
+                                            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
                                             Update
                                         </Link>
                                         <button

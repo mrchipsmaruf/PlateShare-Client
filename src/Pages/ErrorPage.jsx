@@ -14,8 +14,7 @@ const ErrorPage = () => {
                 <img
                     src="https://media.giphy.com/media/UoeaPqYrimha6rdTFV/giphy.gif"
                     alt="404 Not Found"
-                    className="w-64 h-64 object-contain mb-6"
-                />
+                    className="w-64 h-64 object-contain mb-6"/>
                 <h1 className="text-5xl font-bold text-red-400 mb-4">
                     404 - Page Not Found
                 </h1>
@@ -25,8 +24,7 @@ const ErrorPage = () => {
 
                 <button
                     onClick={() => navigate("/")}
-                    className="bg-red-400 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-yellow-400 transition"
-                >
+                    className="bg-red-400 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-yellow-400 transition">
                     Back to Home
                 </button>
             </div>

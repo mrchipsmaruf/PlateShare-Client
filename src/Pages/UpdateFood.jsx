@@ -8,7 +8,7 @@ const UpdateFood = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:3000/foods/${id}`)
+        fetch(`https://plate-share-server-beta.vercel.app/foods/${id}`)
             .then((res) => res.json())
             .then((data) => setFood(data))
             .catch(() => toast.error("Failed to load food data"));
@@ -25,7 +25,7 @@ const UpdateFood = () => {
         try {
             const { _id, ...updatePayload } = food;
 
-            const res = await fetch(`http://localhost:3000/foods/${id}`, {
+            const res = await fetch(`https://plate-share-server-beta.vercel.app/foods/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatePayload),

@@ -34,8 +34,7 @@ const Navbar = () => {
                 <div className="flex md:hidden">
                     <button
                         onClick={() => setMenuOpen(!menuOpen)}
-                        className="text-2xl text-gray-700 hover:text-yellow-400"
-                    >
+                        className="text-2xl text-gray-700 hover:text-yellow-400">
                         {menuOpen ? <FiX /> : <FiMenu />}
                     </button>
                 </div>
@@ -61,22 +60,19 @@ const Navbar = () => {
                             <NavLink
                                 to="/add-food"
                                 className={({ isActive }) =>
-                                    isActive ? "text-yellow-400 font-semibold" : "text-gray-700 hover:text-yellow-400"
-                                }>
+                                    isActive ? "text-yellow-400 font-semibold" : "text-gray-700 hover:text-yellow-400"}>
                                 Add Food
                             </NavLink>
                             <NavLink
                                 to="/manage-my-foods"
                                 className={({ isActive }) =>
-                                    isActive ? "text-yellow-400 font-semibold" : "text-gray-700 hover:text-yellow-400"
-                                }>
+                                    isActive ? "text-yellow-400 font-semibold" : "text-gray-700 hover:text-yellow-400"}>
                                 Manage My Foods
                             </NavLink>
                             <NavLink
                                 to="/my-food-requests"
                                 className={({ isActive }) =>
-                                    isActive ? "text-yellow-400 font-semibold" : "text-gray-700 hover:text-yellow-400"
-                                }>
+                                    isActive ? "text-yellow-400 font-semibold" : "text-gray-700 hover:text-yellow-400"}>
                                 My Food Requests
                             </NavLink>
                         </>
@@ -97,8 +93,7 @@ const Navbar = () => {
                             <img
                                 src={user?.photoURL || "https://i.ibb.co/4Y3p8Fh/user.png"}
                                 alt="user"
-                                className="w-10 h-10 rounded-full border-2 border-yellow-400 object-cover"
-                            />
+                                className="w-10 h-10 rounded-full border-2 border-yellow-400 object-cover"/>
                             <button
                                 onClick={handleLogout}
                                 className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-500 transition">

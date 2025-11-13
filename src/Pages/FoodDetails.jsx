@@ -23,7 +23,7 @@ const FoodDetails = () => {
         if (!food?._id) return;
         setLoadingRequests(true);
         try {
-            const res = await fetch(`http://localhost:3000/food-requests/${food._id}`);
+            const res = await fetch(`https://plate-share-server-beta.vercel.app/food-requests/${food._id}`);
             const data = await res.json();
             if (user?.email && food?.donator_email && user.email === food.donator_email) {
                 setRequests(Array.isArray(data) ? data : []);
@@ -73,7 +73,7 @@ const FoodDetails = () => {
         };
 
         try {
-            const res = await fetch("http://localhost:3000/food-requests", {
+            const res = await fetch("https://plate-share-server-beta.vercel.app/food-requests", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(requestData),
@@ -100,7 +100,7 @@ const FoodDetails = () => {
         setUpdatingId(id);
 
         try {
-            const res = await fetch(`http://localhost:3000/food-requests/${id}`, {
+            const res = await fetch(`https://plate-share-server-beta.vercel.app/food-requests/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status }),
@@ -113,7 +113,7 @@ const FoodDetails = () => {
             const result = await res.json();
             toast.success(result.message);
 
-            const updatedRes = await fetch(`http://localhost:3000/food-requests/${food._id}`);
+            const updatedRes = await fetch(`https://plate-share-server-beta.vercel.app/food-requests/${food._id}`);
             const updatedData = await updatedRes.json();
             setRequests(updatedData);
 

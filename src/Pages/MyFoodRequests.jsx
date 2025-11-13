@@ -9,7 +9,7 @@ const MyFoodRequests = () => {
 
     const fetchRequests = () => {
         if (!user?.email) return;
-        fetch(`http://localhost:3000/my-requests?email=${user.email}`)
+        fetch(`https://plate-share-server-beta.vercel.app/my-requests?email=${user.email}`)
             .then((res) => res.json())
             .then((data) => setRequests(data))
             .catch((err) => console.error("Error fetching requests:", err));
@@ -53,7 +53,7 @@ const MyFoodRequests = () => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/my-requests/${id}`, {
+                fetch(`https://plate-share-server-beta.vercel.app/my-requests/${id}`, {
                     method: "DELETE",
                 })
                     .then((res) => res.json())
