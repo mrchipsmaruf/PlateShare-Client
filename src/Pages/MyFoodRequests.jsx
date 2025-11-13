@@ -26,11 +26,14 @@ const MyFoodRequests = () => {
 
     useEffect(() => {
         const handleStorage = (e) => {
-            if (e.key === "requestsUpdated") setRefresh((prev) => !prev);
+            if (e.key === "requestsUpdated") {
+                fetchRequests();
+            }
         };
+
         window.addEventListener("storage", handleStorage);
 
-        const handleSameTab = () => setRefresh((prev) => !prev);
+        const handleSameTab = () => fetchRequests();
         window.addEventListener("requests-updated", handleSameTab);
 
         return () => {
@@ -59,7 +62,7 @@ const MyFoodRequests = () => {
                             setRequests((prev) => prev.filter((r) => r._id !== id));
                             Swal.fire("Deleted!", "Your request has been deleted.", "success");
 
-                            localStorage.setItem("requestsUpdated", Date.now());
+                            localStorage.setItem("requestsUpdated", Date.now().toString());
                             window.dispatchEvent(new Event("requests-updated"));
                         } else {
                             Swal.fire("Error!", "Failed to delete request.", "error");
@@ -76,7 +79,7 @@ const MyFoodRequests = () => {
     return (
         <div className="max-w-5xl mx-auto py-10 px-4">
             <h2 className="text-3xl font-bold text-center text-yellow-500 mb-8">
-                My Food Requests
+                My <span className="text-red-400">Food</span> Requests
             </h2>
 
             {requests.length === 0 ? (
@@ -92,7 +95,7 @@ const MyFoodRequests = () => {
                             <img
                                 src={req.foodImage}
                                 alt={req.foodName}
-                                className="h-48 w-full object-cover"/>
+                                className="h-48 w-full object-cover" />
                             <div className="p-4">
                                 <h3 className="text-lg font-semibold text-red-400">
                                     {req.foodName}
@@ -106,19 +109,18 @@ const MyFoodRequests = () => {
                                     {req.contact}
                                 </p>
                                 <p
-                                    className={`text-sm font-semibold mt-2 ${
-                                        req.status === "pending"
+                                    className={`text-sm font-semibold mt-2 ${req.status === "pending"
                                             ? "text-yellow-500"
                                             : req.status === "accepted"
-                                            ? "text-green-500"
-                                            : "text-red-500"
-                                    }`}>
+                                                ? "text-green-500"
+                                                : "text-red-500"
+                                        }`}>
                                     Status: {req.status}
                                 </p>
 
                                 <button
                                     onClick={() => handleDelete(req._id)}
-                                    className="mt-3 bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 text-sm">
+                                    className="mt-3 w-full bg-red-400 text-white px-4 py-1 rounded hover:bg-red-600 text-sm">
                                     Delete
                                 </button>
                             </div>

@@ -61,8 +61,8 @@ const Login = () => {
             <Navbar />
 
             <div className="flex justify-center items-center min-h-[80vh]">
-                <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-                    <h2 className="text-2xl font-bold text-center mb-6 text-yellow-500">Login</h2>
+                <div className="bg-red-50 p-8 rounded-2xl shadow-md w-full max-w-md">
+                    <h2 className="text-2xl font-bold text-center mb-6 text-yellow-400">Welcome back to <span className="text-red-400 text-4xl">PlateShare</span></h2>
 
                     <form onSubmit={handleLogin} className="space-y-4">
                         <input
@@ -71,7 +71,7 @@ const Login = () => {
                             placeholder="Email"
                             value={emailForReset}
                             onChange={(e) => setEmailForReset(e.target.value)}
-                            className="w-full p-2 border rounded-md"
+                            className="w-full p-2 border rounded-md bg-white"
                             required/>
 
                         <div className="relative">
@@ -79,7 +79,7 @@ const Login = () => {
                                 type={showPassword ? "text" : "password"}
                                 name="password"
                                 placeholder="Password"
-                                className="w-full p-2 border rounded-md pr-10"
+                                className="w-full p-2 border rounded-md pr-10 bg-white"
                                 required/>
                             <button
                                 type="button"

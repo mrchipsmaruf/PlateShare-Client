@@ -63,35 +63,35 @@ const Register = () => {
             <Navbar />
 
             <div className="flex justify-center items-center min-h-[80vh]">
-                <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-                    <h2 className="text-2xl font-bold text-center mb-6 text-yellow-500">Register</h2>
+                <div className="bg-red-50 p-8 rounded-2xl shadow-md w-full max-w-md">
+                    <h2 className="text-2xl font-bold text-center mb-6 text-yellow-400">Welcome to <br /> <span className="text-red-400 text-4xl">PlateShare</span></h2>
 
                     <form onSubmit={handleRegister} className="space-y-4">
                         <input
                             type="text"
                             name="name"
                             placeholder="Name"
-                            className="w-full p-2 border rounded-md"
-                            required/>
+                            className="w-full p-2 border rounded-md bg-white"
+                            required />
                         <input
                             type="email"
                             name="email"
                             placeholder="Email"
-                            className="w-full p-2 border rounded-md"
-                            required/>
+                            className="w-full p-2 border rounded-md bg-white"
+                            required />
                         <input
                             type="text"
                             name="photoURL"
                             placeholder="Photo URL"
-                            className="w-full p-2 border rounded-md"/>
+                            className="w-full p-2 border rounded-md bg-white" />
 
                         <div className="relative">
                             <input
                                 type={showPassword ? "text" : "password"}
                                 name="password"
                                 placeholder="Password"
-                                className="w-full p-2 border rounded-md pr-10"
-                                required/>
+                                className="w-full p-2 border rounded-md pr-10 bg-white"
+                                required />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}

@@ -38,7 +38,7 @@ const AvailableFoods = () => {
                             />
 
                             <div className="p-5">
-                                <h3 className="text-xl font-semibold text-yellow-400 mb-2">
+                                <h3 className="text-xl font-semibold text-red-400 mb-2">
                                     {food.food_name}
                                 </h3>
 
