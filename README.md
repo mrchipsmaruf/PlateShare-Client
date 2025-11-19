@@ -47,7 +47,8 @@ VITE_API_URL = https://your-server-url.com
 
 🖼️ Screenshots
 
-Add your screenshot images here
+[Add your screenshot images here](https://github.com/mrchipsmaruf/PlateShare-Client/blob/main/Screenshot%202025-11-19%20120841.png)
+
 
 
 
