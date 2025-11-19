@@ -45,9 +45,11 @@ Create a .env file:
 VITE_API_URL=https://your-server-url.com
 
 📸 Screenshots
+
 <img src="https://github.com/mrchipsmaruf/PlateShare-Client/blob/main/Screenshot%202025-11-19%20120917.png" width="400"/> 
 <img src="https://github.com/mrchipsmaruf/PlateShare-Client/blob/main/Screenshot%202025-11-19%20120841.png" width="400"/>
 
 👨‍💻 Author
+
 Al Maruf
 🌐 GitHub: https://github.com/mrchipsmaruf
